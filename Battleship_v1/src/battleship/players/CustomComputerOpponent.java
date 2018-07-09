@@ -66,9 +66,13 @@ public class CustomComputerOpponent extends ComputerOpponent {
     @Override
     public void yourTurnHasBegun() {
         // TODO Auto-generated method stub
-    }
+    }  
     
-    private int i=0;
+    /*
+     * Here are variables used for the class
+     */
+    
+    private int i=0;  
     private int count=1;
     private List<Coordinates> possibleTargets = new ArrayList<Coordinates>();
     private List<Coordinates>  lastTargetHit= new ArrayList<Coordinates>();
@@ -82,10 +86,14 @@ public class CustomComputerOpponent extends ComputerOpponent {
         return shoot();
     }
     
+    /*
+     * huntingMode method picks coordinates for the target mode, using last hit as an input
+     */
     public void huntingMode (Coordinates coordinates) {
     	int x=coordinates.x;
     	int y=coordinates.y;
     	
+    	// up to 4 possible coordinates saved in an array
     	List<Coordinates> closeTargets = new ArrayList<Coordinates>();
     	
     	
@@ -98,7 +106,9 @@ public class CustomComputerOpponent extends ComputerOpponent {
     	closeTargets.add(2, upT);
     	closeTargets.add(3, downT);
     	
-    	lastTargetHit.add(coordinates);
+    	lastTargetHit.add(coordinates); //last successful hit is saved
+    	
+    	//if these coordinates satisfy the limitations, they are saved as possible targets, if that's a first hit
     	
     	if (lastTargetHit.size()<=1) {
     	for (int j=0; j<closeTargets.size(); j++) { 
@@ -111,29 +121,30 @@ public class CustomComputerOpponent extends ComputerOpponent {
     	    }
     	  }
     	}
+    	// if it's not a first hit and a target mode started possible targets are picked depending on a direction of next succesfull hit
     	else {
     	
     	
     	if ((lastTargetHit.get(i).x==lastTargetHit.get(i-1).x) && (lastTargetHit.get(i).y<lastTargetHit.get(i-1).y)) {
     		
     		
-            //possibleTargets = new ArrayList<Coordinates>();
+            possibleTargets = new ArrayList<Coordinates>();
 			
-            upT= new Coordinates (lastTargetHit.get(i-1).x, lastTargetHit.get(i-1).y+1);
-            downT= new Coordinates (lastTargetHit.get(i).x, lastTargetHit.get(i).y-1);
-            if (0<=upT.x && 0<=upT.y) {
-    			if (upT.x <10 && upT.y <10) 
-            possibleTargets.add(upT);
+            Coordinates up = new Coordinates (lastTargetHit.get(i-1).x, lastTargetHit.get(i-1).y+1);
+            Coordinates down = new Coordinates (lastTargetHit.get(i).x, lastTargetHit.get(i).y-1);
+            if (0<=up.x && 0<=up.y) {
+    			if (up.x <10 && up.y <10) 
+            possibleTargets.add(up);
             }
-            if (0<=downT.x && 0<=downT.y) {
-    			if (downT.x <10 && downT.y <10) 
-            possibleTargets.add(downT);
+            if (0<=down.x && 0<=down.y) {
+    			if (down.x <10 && down.y <10) 
+            possibleTargets.add(down);
             }
     	}
             
         if ((lastTargetHit.get(i).x==lastTargetHit.get(i-1).x) && (lastTargetHit.get(i).y>lastTargetHit.get(i-1).y)) {
         	
-               // possibleTargets = new ArrayList<Coordinates>();
+               possibleTargets = new ArrayList<Coordinates>();
     			
                 downT= new Coordinates (lastTargetHit.get(i-1).x, lastTargetHit.get(i-1).y-1);
                 upT= new Coordinates (lastTargetHit.get(i).x, lastTargetHit.get(i).y+1);
@@ -148,9 +159,9 @@ public class CustomComputerOpponent extends ComputerOpponent {
             
 					}
 		if ((lastTargetHit.get(i).y==lastTargetHit.get(i-1).y) && (lastTargetHit.get(i).x>lastTargetHit.get(i-1).x)) {
-			//possibleTargets = new ArrayList<Coordinates>();
-			Coordinates right = new Coordinates (lastTargetHit.get(i).y, lastTargetHit.get(i).x+1);
-            Coordinates left = new Coordinates (lastTargetHit.get(i-1).y, lastTargetHit.get(i-1).x-1);
+			possibleTargets = new ArrayList<Coordinates>();
+			Coordinates right = new Coordinates (lastTargetHit.get(i).x+1, lastTargetHit.get(i).y);
+            Coordinates left = new Coordinates (lastTargetHit.get(i-1).x-1, lastTargetHit.get(i-1).y);
             if (0<=right.x && 0<=right.y) {
     			if (right.x <10 && right.y <10)
             possibleTargets.add(right);
@@ -164,112 +175,68 @@ public class CustomComputerOpponent extends ComputerOpponent {
 		  }
 		
 		if ((lastTargetHit.get(i).y==lastTargetHit.get(i-1).y) && (lastTargetHit.get(i).x<lastTargetHit.get(i-1).x)) {
-			// possibleTargets = new ArrayList<Coordinates>();
-			Coordinates left = new Coordinates (lastTargetHit.get(i).y, lastTargetHit.get(i).x-1);
-            Coordinates right = new Coordinates (lastTargetHit.get(i-1).y, lastTargetHit.get(i-1).x+1);
-            if (0<=right.x && 0<=right.y) {
-    			if (right.x <10 && right.y <10)
-            possibleTargets.add(right);
+			possibleTargets = new ArrayList<Coordinates>();
+			Coordinates leftC = new Coordinates (lastTargetHit.get(i).x-1, lastTargetHit.get(i).y);
+            Coordinates rightC = new Coordinates (lastTargetHit.get(i-1).x+1, lastTargetHit.get(i-1).y);
+            if (0<=rightC.x && 0<=rightC.y) {
+    			if (rightC.x <10 && rightC.y <10)
+            possibleTargets.add(rightC);
             }
-            if (0<=left.x && 0<=left.y) {
-    			if (left.x <10 && left.y <10)
-            possibleTargets.add(left);
+            if (0<=leftC.x && 0<=leftC.y) {
+    			if (leftC.x <10 && leftC.y <10)
+            possibleTargets.add(leftC);
             }
             
 		  }
 		
     	}
     	
-    	
-    	
+
     	i++;
-    	
-    	/*int size = possibleTargets.size();
-    	
-    	if (lastTargetHit.size()>2) {
-    		if ((lastTargetHit.get(i).x==lastTargetHit.get(i-1).x) && ((lastTargetHit.get(i).y==lastTargetHit.get(i-1).y-1) || (lastTargetHit.get(i).y==lastTargetHit.get(i-1).y+1))) {
-    			for (int k = 0; k <size; k++) {
-    				if (((possibleTargets.get(k).x==lastTargetHit.get(i-1).x-1) && (possibleTargets.get(k).y==lastTargetHit.get(i-1).y)) || ((possibleTargets.get(k).y==lastTargetHit.get(i-1).y) && (possibleTargets.get(k).x==lastTargetHit.get(i-1).x+1))) {
-    					rejectedCoordinates.add(possibleTargets.get(k));
-    				    
-				}
-    				if (((possibleTargets.get(k).x==lastTargetHit.get(i).x-1) && (possibleTargets.get(k).y==lastTargetHit.get(i).y)) || ((possibleTargets.get(k).y==lastTargetHit.get(i).y) && (possibleTargets.get(k).x==lastTargetHit.get(i).x+1))) {
-    					rejectedCoordinates.add(possibleTargets.get(k));
-    				    
-    				}
-    			}   				
-    		}
-    		
-    		if ((lastTargetHit.get(i).y==lastTargetHit.get(i-1).y) && ((lastTargetHit.get(i).x==lastTargetHit.get(i-1).x-1) || (lastTargetHit.get(i).x==lastTargetHit.get(i-1).x+1))) {
-    			for (int l = 0; l < size; l++) {
-    				if (((possibleTargets.get(l).y==lastTargetHit.get(i-1).y-1)  && (possibleTargets.get(l).x==lastTargetHit.get(i-1).x))  ||  ((possibleTargets.get(l).x==lastTargetHit.get(i-1).x) && (possibleTargets.get(l).y==lastTargetHit.get(i-1).y+1))) {
-    					rejectedCoordinates.add(possibleTargets.get(l));
-    				
-				}
-    				if (((possibleTargets.get(l).x==lastTargetHit.get(i).x) && (possibleTargets.get(l).y==lastTargetHit.get(i).y-1)) || ((possibleTargets.get(l).y==lastTargetHit.get(i).y+1) && (possibleTargets.get(l).x==lastTargetHit.get(i).x))) {
-    					rejectedCoordinates.add(possibleTargets.get(l));
-    					
-    				}
-    				
-    			}
-    				
-    		}
-    		System.out.println("Removed coordinates");
-    		
-    	} */
-    	
+
     }
+    
+    // shoot method is a fire strategy
     
     protected Coordinates shoot() throws Exception {
     	Random random = new Random();
-
-
-        
+  
         int x=Settings.PLAYING_FIELD_HORIZONTAL_SIZE;
         int y=Settings.PLAYING_FIELD_VERTICAL_SIZE;
         
-        lastHitNum[0]=0;
+        lastHitNum[0]=0; 
     	
     	Coordinates coordinates = new Coordinates(
         		random.nextInt(x),
                 random.nextInt(y));
     	
+        //this loop runs target mode is there was a hit and provides coordinates for a shot
     	
-        
         for (int attempts = Settings.PLAYING_FIELD_HORIZONTAL_SIZE * Settings.PLAYING_FIELD_VERTICAL_SIZE * 10; attempts > 0; attempts--) { 
         	
         	lastHitNum[count]=getHits();
-        	if (lastHitNum[count]>lastHitNum[count-1]) {
+        	if (lastHitNum[count]>lastHitNum[count-1])
+        	{
         		
                 huntingMode(lastTarget.get(0));
-                
-                
-               }
-        	
-        	
+        	}
+
+          // if possible targets are none, coordinates are picked randomly from only even or odd ones, in a chess pattern
         	
         	if (possibleTargets.isEmpty()) {
         		lastTargetHit.clear();
         		i=0;
         		
-        		if (attempts>975) {
-        			do {
-            			coordinates = new Coordinates(
-                        		random.nextInt(x/2)+2,
-                                random.nextInt(y/2)+2);
-            		} while (((x%2)!=0 && (y%2)!=0) && ((x%2)==0 && (y%2)==0));
-        			
-        		}
-        		else {
+        		
         		do {
         			coordinates = new Coordinates(
                     		random.nextInt(x),
                             random.nextInt(y));
-        		} while (((x%2)!=0 && (y%2)==0) && ((x%2)==0 && (y%2)==0));
+        		} while (((x%2)!=0 && (y%2)==0) && ((x%2)==0 && (y%2)!=0));
             	
                }
         		
-        	}
+        	// if possible targets exist, a first one is picked from the list and removed from it
             
             else {
             	coordinates = possibleTargets.get(0);
@@ -287,10 +254,12 @@ public class CustomComputerOpponent extends ComputerOpponent {
             	
             	lastTarget.add(0, coordinates);
             
-            	 
+            //this 2 loops are for testing purposes
+            	// this one prints out possible targets
             	for (Coordinates targets : possibleTargets) {
           	      System.out.println(targets + "targets");
           	}
+            	// this one prints out successful hits
             	for (Coordinates thisones : lastTargetHit) {
             	      System.out.println(thisones + "hits");
             	}
